@@ -1,0 +1,22 @@
+<div flex class="git-hub-user-activity">
+
+  <md-toolbar class="md-theme-light">
+    <h2 class="md-toolbar-tools">
+      <span>Gibhub Activity</span>
+    </h2>
+  </md-toolbar>
+
+  <md-content>
+    <md-list>
+      <md-list-item class="md-3-line" ng-repeat="item in activity">
+        <img ng-src="{{item.image}}" class="md-avatar" alt="{{item.userName}}">
+        <div class="md-list-item-text">
+          <h3>{{item.type}}</h3>
+          <h4>{{item.repoName}}</h4>
+          <p>{{item.createdAt}}</p>
+        </div>
+        <md-divider md-inset="" ng-if="!$last"></md-divider>
+      </md-list-item>
+    </md-list>
+  </md-content>
+</div>
