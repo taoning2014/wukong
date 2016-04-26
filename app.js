@@ -15,18 +15,14 @@ var authGithub = require('./routes/auth-github');
 
 var app = express();
 
-var config = require('./config.json')[app.get('env')];
-console.log('config obj', config);
-
 var exphbs = require('express-handlebars');
 
-var uristring = process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || config.mongo_url;
+var uristring = process.env.WUKONG_MONGO_URL;
 
 app.engine('handlebars', exphbs({
   defaultLayout: 'static',
   partialsDir: 'views/partials/'
 }));
-
 app.set('view engine', 'handlebars');
 
 app.use(cors());
