@@ -70,7 +70,7 @@ exports.GithubActivityController = function($scope, $http) {
      response.data.forEach(function(a) {
        if(activity.length < 5) {
          activity.push({
-           image: a.org.avatar_url || a.actor.avatar_url,
+           image: a.org? a.org.avatar_url : a.actor.avatar_url,
            userName: a.actor.login,
            type: a.type.replace(/([a-z](?=[A-Z]))/g, '$1 '),
            repoName: a.repo.name,
