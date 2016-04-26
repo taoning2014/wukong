@@ -5,20 +5,17 @@ var _ = require('lodash');
 var passport = require('passport');
 var GithubStrategy = require('passport-github').Strategy;
 
-var app = express();
-
-var config = require('../config.json')[app.get('env')];
 var User = require('../mongodb/models').User;
 
 // High level serialize/de-serialize configuration for passport
 passport.serializeUser(function(user, done) {
-  console.log('serialize user to session: ' + user.profile);
+  console.log('serialize user to session: ' + user);
   done(null, user._id);
 });
 
 passport.deserializeUser(function(id, done) {
   User.findOne({ _id: id }, function(err, user) {
-    console.log('deserialize user from session', user.profile);
+    console.log('deserialize user from session', user);
     done(null, user);
   });
 });
@@ -26,9 +23,9 @@ passport.deserializeUser(function(id, done) {
 // Github-specific
 passport.use(new GithubStrategy(
   {
-    clientID: config.GITHUB_CLIENT_ID,
-    clientSecret: config.GITHUB_CLIENT_SECRET,
-    callbackURL: config.callbackURL
+    clientID: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: process.env.WUKONG_CALLBACK_URL
   },
   function(accessToken, refreshToken, profile, done) {
     console.log('in strategy, got profile: ', profile);
@@ -58,8 +55,8 @@ router.get('/github',
 
 router.get('/github/callback',
   passport.authenticate('github', {
-    successRedirect: config.successRedirect,
-    failureRedirect: config.failureRedirect
+    successRedirect: process.env.WUKONG_SUCCESS_REDIRECT,
+    failureRedirect: process.env.WUKONG_FAILURE_REDIRECT
   }));
 
 router.get('/logout', function(req, res) {
