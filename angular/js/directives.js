@@ -32,3 +32,10 @@ exports.dynamicNews = function() {
     templateUrl: '/views/partials/dynamic-news.html'
   };
 };
+
+exports.githubActivity = function() {
+  return {
+    controller: 'GithubActivityController',
+    templateUrl: '/views/partials/user-activity.html'
+  };
+};

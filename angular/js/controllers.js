@@ -35,47 +35,56 @@ exports.UserAttributeBoardController = function($scope) {
   ];
 };
 
-exports.DynamicNewsController = function($scope) {
-  $scope.news = [
-    {
-      header: 'Today\'s Lecture',
-      content: 'Git (/ɡɪt/[5]) is a widely used source code management system for software development. It is a' +
-      'distributed revision control system with an emphasis on speed,[6] data integrity,[7] and support for ' +
-      'distributed, non-linear workflows.[8] Git was initially designed and developed in 2005 by Linux kernel ' +
-      'developers (including Linus Torvalds) for Linux kernel development.[9]'
-    },
-    {
-      header: 'Ongoing Projects',
-      content: 'Hatch Mott MacDonald specializes in developing parking plans and parking management programs. ' +
-      'Our team has extensive experience in developing sustainable parking solutions, drafting policies and ' +
-      'regulatory language for parking programs, helping the clients understand the true cost of parking, ' +
-      'offering site specific parking solutions, providing parking restoration and management services, ' +
-      'and parking system monetization.'
-    },
-    {
-      header: 'Tomorrow\'s event,',
-      content: 'btw, this post is a bit of a followup to my previous post,s, I found a little clarity &' +
-      'content ☺)Update (8/04/15): I’ve created an updated version for Angular-Material 0.10.0 on CodePen.'
-    },
-    { header: 'Next 7 days Events', content: 'Mobile RTC Hackathon' }
-  ];
+exports.DynamicNewsController = function($scope, $http) {
+  $http.get("http://52.32.15.147:3000/events?counts=3")
+   .then(function(response) {
+      $scope.news = response.data;
+   });
 };
 
-exports.ProjectListController = function($scope) {
+exports.ProjectListController = function($scope, $http) {
   $scope.selectedIndex = 0;
-  $scope.projects = [
-    {
-      thumbnail: 'image/1.jpg',
-      projectNumber: 'Option 1',
-      projectName: 'AppStore Crawler',
-      description: 'Web crawling to gather information is a common technique used to efficiently collect ' +
-      'information from across the web.'
-    },
-    {
-      thumbnail: 'image/2.jpg',
-      projectNumber: 'Option 2',
-      projectName: 'VIP Service Prediction',
-      description: 'There are millions of apps in the iOS AppStore and Google Play store. '
-    }
-  ];
+  $http.get("http://52.32.15.147:3000/posts?counts=0")
+  .then(function(response) {
+    var projects = response.data;
+    var formatedProjects = [];
+    projects.forEach(function(p, idx) {
+      if(p.content && formatedProjects.length < 4) {
+        var project = {
+          thumbnail: p.images[0],
+          projectNumber: "project" + idx,
+          projectName: p.content,
+          description: ''
+        };
+        formatedProjects.push(project);
+      }
+    });
+    $scope.projects = formatedProjects;
+  });
 };
+
+exports.GithubActivityController = function($scope, $http) {
+  $http.get("https://api.github.com/users/Yuqin1990/events")
+   .then(function(response) {
+     var activity = [];
+     response.data.forEach(function(a) {
+       if(activity.length < 5) {
+         activity.push({
+           image: a.org? a.org.avatar_url : a.actor.avatar_url,
+           userName: a.actor.login,
+           type: a.type.replace(/([a-z](?=[A-Z]))/g, '$1 '),
+           repoName: a.repo.name,
+           createdAt: formateDate(a.created_at)
+         });
+       }
+      });
+
+      $scope.activity = activity;
+
+   });
+};
+
+function formateDate( date ) {
+  var fmDate = new Date(date);
+  return fmDate.getFullYear() + '年' + fmDate.getMonth() + '月' + fmDate.getDate() + '日 ' + fmDate.getHours() + ':' + fmDate.getMinutes();
+}
