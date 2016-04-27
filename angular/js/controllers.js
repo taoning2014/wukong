@@ -36,7 +36,7 @@ exports.UserAttributeBoardController = function($scope) {
 };
 
 exports.DynamicNewsController = function($scope, $http) {
-  $http.get("http://52.32.15.147:3000/events?counts=3")
+  $http.get("https://52.32.15.147:3000/events?counts=3")
    .then(function(response) {
       $scope.news = response.data;
    });
@@ -44,7 +44,7 @@ exports.DynamicNewsController = function($scope, $http) {
 
 exports.ProjectListController = function($scope, $http) {
   $scope.selectedIndex = 0;
-  $http.get("http://52.32.15.147:3000/posts?counts=0")
+  $http.get("https://52.32.15.147:3000/posts?counts=0")
   .then(function(response) {
     var projects = response.data;
     var formatedProjects = [];
