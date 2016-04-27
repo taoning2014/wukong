@@ -1,7 +1,7 @@
 var controllers = require('./controllers');
 var directives = require('./directives');
 var services = require('./services');
-var _ = require('underscore');
+var _ = require('lodash');
 
 var components = angular.module('wukong.components', ['ng', 'ngMaterial']);
 
