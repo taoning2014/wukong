@@ -24,14 +24,12 @@ exports.TextDividerController = function($scope) {
 
 exports.UserAttributeBoardController = function($scope) {
   $scope.range = [
-    { label: 'Beginner' },
-    { label: 'Level' },
-    { label: 'Experience' },
-    { label: 'Projects' },
-    { label: 'Group' },
-    { label: 'Profile' },
-    { label: 'Registratered Events' },
-    { label: 'Else' }
+    { label: 'Total Score' },
+    { label: 'Personal Hacker Rank' },
+    { label: 'Team Hacker Rank' },
+    { label: 'Nice Value' },
+    { label: 'Daily Activity' },
+    { label: 'Reputation' }
   ];
 };
 
